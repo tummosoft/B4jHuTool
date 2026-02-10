@@ -1,0 +1,70 @@
+﻿AppType=JavaFX
+Build1=Default,b4j.example
+File1=Layout1.bjl
+FileGroup1=Default Group
+Group=Default Group
+Library1=jcore
+Library2=jfx
+Library3=jxui
+Library4=systemhelper
+NumberOfFiles=1
+NumberOfLibraries=4
+NumberOfModules=0
+Version=10.3
+@EndOfDesignText@
+#Region Project Attributes 
+	#MainFormWidth: 600
+	#MainFormHeight: 600 
+#End Region
+
+#AdditionalJar: hutool-core-5.8.43.jar
+#AdditionalJar: oshi-core-6.9.3.jar
+
+Sub Process_Globals
+	Private fx As JFX
+	Private MainForm As Form
+	Private xui As XUI 
+	Private Button1 As B4XView
+End Sub
+
+Sub AppStart (Form1 As Form, Args() As String)
+	MainForm = Form1
+	MainForm.RootPane.LoadLayout("Layout1")
+	MainForm.Show
+End Sub
+
+Sub Button1_Click
+	Dim host_info As HostInfo
+	Log(host_info.Address)
+	Log(host_info.Name)
+	' --------------------------------------
+	Dim java_info As JavaInfo
+	Log(java_info.isJava11)
+	Log(java_info.VendorURL)
+	
+	Dim jr As JavaRuntimeInfo
+	Log(jr.Name)
+	Log(jr.HomeDir)
+	Log(jr.LibraryPath)
+	
+	Dim jvr As JavaSpecInfo
+	Log(jvr.Name)
+	
+	Dim jvm As JvmInfo
+	Log(jvm.Name)
+	
+	Dim jvm_spec As JvmSpecInfo
+	Log(jvm_spec.Name)
+	
+	Dim os As OsInfo
+	Log(os.isWindows10)
+	
+	Dim rt_info As RuntimeInfo
+	Log(rt_info.MaxMemory)
+	
+	Dim sys_util As SystemUtil
+	
+	
+	Dim user_info As UserInfo
+	Log(user_info.CurrentDir)
+End Sub
