@@ -100,6 +100,7 @@ public class SettingLoader {
 		BufferedReader reader = null;
 		try {
 			reader = IoUtil.getReader(settingStream, this.charset);
+                        String group = null;
 		// Group
 
 			String line;
