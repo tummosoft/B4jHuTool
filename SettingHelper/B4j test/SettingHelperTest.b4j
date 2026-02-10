@@ -1,0 +1,59 @@
+﻿AppType=JavaFX
+Build1=Default,b4j.example
+File1=Layout1.bjl
+FileGroup1=Default Group
+Group=Default Group
+Library1=jcore
+Library2=jfx
+Library3=jxui
+Library4=settinghelper
+NumberOfFiles=1
+NumberOfLibraries=4
+NumberOfModules=0
+Version=10.3
+@EndOfDesignText@
+#Region Project Attributes 
+	#MainFormWidth: 600
+	#MainFormHeight: 600 
+#End Region
+
+#AdditionalJar: hutool-core-5.8.43.jar
+#AdditionalJar: hutool-log-5.8.43.jar
+#AdditionalJar: hutool-setting-5.8.43.jar
+
+Sub Process_Globals
+	Private fx As JFX
+	Private MainForm As Form
+	Private xui As XUI 
+	Private Button1 As B4XView
+	Dim setting As SettingHelper
+End Sub
+
+Sub AppStart (Form1 As Form, Args() As String)
+	MainForm = Form1
+	MainForm.RootPane.LoadLayout("Layout1")
+	MainForm.Show
+	
+	If File.Exists(File.DirApp, "setting.ini") = False Then
+		File.WriteString(File.DirApp, "setting.ini", "")
+	End If
+
+	Dim setting_file As String = File.Combine(File.DirApp, "setting.ini")
+	setting.Initialize2(setting_file, "UTF-8", True)
+	
+	setting.Set("server", "localhost")
+		
+	setting.setByGroup("user", "account", "admin")
+	setting.setByGroup("password", "account", "123456")
+	setting.setByGroup("facebook", "social", "https://facebook.com/admin")
+	setting.setByGroup("twitter", "social", "https://x.com/admin")
+	
+	setting.Store
+End Sub
+
+Sub Button1_Click
+	Dim server As Boolean = setting.containsKey("server")
+	Log(server)
+	Dim user As Boolean = setting.containsKey2("account", "user")
+	Log(user)
+End Sub
