@@ -1,0 +1,87 @@
+﻿AppType=JavaFX
+Build1=Default,b4j.example
+File1=Layout1.bjl
+FileGroup1=Default Group
+Group=Default Group
+Library1=jcore
+Library2=jfx
+Library3=jxui
+Library4=cachehelper
+NumberOfFiles=1
+NumberOfLibraries=4
+NumberOfModules=0
+Version=10.3
+@EndOfDesignText@
+#Region Project Attributes 
+	#MainFormWidth: 600
+	#MainFormHeight: 600 
+#End Region
+
+#AdditionalJar: hutool-all-5.8.43.jar
+
+Sub Process_Globals
+	Private fx As JFX
+	Private MainForm As Form
+	Private xui As XUI 
+	Private Button1 As B4XView
+	Dim fifoCache As CacheHelper
+	Dim lruCache As CacheHelper
+	Dim timedCache As CacheHelper
+	Private Button2 As Button
+End Sub
+
+Sub AppStart (Form1 As Form, Args() As String)
+	MainForm = Form1
+	MainForm.RootPane.LoadLayout("Layout1")
+	MainForm.Show
+	
+	fifoCache.InitFIFOCache(3)
+	lruCache.InitLRUCache(3)
+	timedCache.InitTimedCache(2000)
+		
+	fifoCache.put("key1", "value1")
+	fifoCache.put("key2", "value2")
+	fifoCache.put("key3", "value3")
+	
+	Dim k1 As String = fifoCache.get("key1")
+	Log("key 1 = " & k1)
+
+	' -----------------------------------------
+	lruCache.put("key1", "value1")
+	lruCache.put("key2", "value2")
+	lruCache.put("key3", "value3")
+	
+	lruCache.get("key1")
+	
+	lruCache.put("key4", "value4")
+
+	' -------------------------------------
+	timedCache.put("key1", "value1")
+	
+	Dim value As String = timedCache.get("key1")
+	Log("timedCache [key1]: " & value)
+
+	Sleep(3000)
+	
+	value = timedCache.get("key1")
+	Log("timedCache - [key1]: " & value)
+
+End Sub
+
+Sub Button1_Click
+	fifoCache.put("key4", "value4")
+	
+	Dim k4 As String = fifoCache.get("key4")
+	Log("key 4 = " & k4)
+	
+	Dim k1 As String = fifoCache.get("key1")
+	Log("key 1 = " & k1)
+End Sub
+
+Private Sub Button2_Click
+	Dim value As String = fifoCache.get("key2")
+	Log("key2: " & value)
+
+	value = fifoCache.get("key4")
+	Log("key4: " & value)
+End Sub
