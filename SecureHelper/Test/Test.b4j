@@ -1,0 +1,78 @@
+﻿AppType=JavaFX
+Build1=Default,b4j.example
+File1=Layout1.bjl
+FileGroup1=Default Group
+Group=Default Group
+Library1=jcore
+Library2=jfx
+Library3=jxui
+Library4=encryptionhelper
+NumberOfFiles=1
+NumberOfLibraries=4
+NumberOfModules=0
+Version=10.3
+@EndOfDesignText@
+#Region Project Attributes 
+	#MainFormWidth: 600
+	#MainFormHeight: 600 
+#End Region
+
+#AdditionalJar: hutool-all-5.8.43.jar
+
+Sub Process_Globals
+	Private fx As JFX
+	Private MainForm As Form
+	Private xui As XUI 
+	Private Button1 As B4XView
+	Dim Encypton As EncryptionHelper
+
+End Sub
+
+Sub AppStart (Form1 As Form, Args() As String)
+	MainForm = Form1
+	MainForm.RootPane.LoadLayout("Layout1")
+	MainForm.Show
+	
+	EncyptonWithNull
+	
+	'EncyptonWithOnlyPublicKey
+End Sub
+
+Sub EncyptonWithNull
+	Encypton.InitRSA(Null, Null)
+	
+	Log(Encypton.GetPrivateKeyBase64)
+	Log(Encypton.GetPublicKeyBase64)
+End Sub
+
+Sub EncyptonWithPublicAndPrivateKey
+	Dim privateKey As String = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAPcTfAoqXadHi3FYK1vuRXaOS2f968no29VH5XNUi6Gn7qohNDY9vqpImSV/h42Mmv7qIvu8SxgXQd/TLnP9q45Fbw0emuOv505Bp3cG9t2CLqJPfh8P+jJTYWUsk3nFiqRQszjXoAswPy+MlRXJ9e1Fz9ClgDzGWRLyKorltYtnAgMBAAECgYAA9KjWqzpIgtzVt+cXCHFpV3yQLunCEq4DAa+wBgQyQGGKc+1tRkjeBMDe5cLi98fDs6kl+yD5O2HMWVdFKJaIyObg++jYqFJjniABVG6yU6b0TfONqmGuhQLJAVlnTy0Zlm4x0PUQ6e360QJPG7Danl8HKruyc99jEXDS0qQTnQJBAPolfxW5XIu7AzG685/vYgcAPzuAzZKUQyfH56WmBYEaKZIw0vLH+WdZXA1Nb4i/3tPdnbQYNwrUtXwhuX26GlsCQQD825hY1NY+4yOpzcITsF9bl3TYjRsF4j9ChMWYsTUSCbZLmuP5KP0WQnwnzNU2pVVpuBfq+sUH7HDSi9V7RWjlAkEAvZaDvmxRxxnDbwKZuUMOke3O/wM9S3YRe+oYGMU+8L1qeoGEsDt+PKVOjkp9WTDK6trRtviPZycWMfHBi5fsdwJAV9JFRYUWrFzjhBRstb3qQLuH37aSjiaYZhgLMQ9LKWqqH/Q5/c3YqSSKTqB75TDjS4ae+AQE7s2WGeprSRdAaQJAGKcYPXO4Mbj9JPCacV2NBv4DyjbzbWV3ZgclBL+wd+2MJDu2sAd0i2oqMAsIR9OZ2og7jAh/k/Qrmw3EqyoUdw=="
+	Dim publickey As String = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD3E3wKKl2nR4txWCtb7kV2jktn/evJ6NvVR+VzVIuhp+6qITQ2Pb6qSJklf4eNjJr+6iL7vEsYF0Hf0y5z/auORW8NHprjr+dOQad3Bvbdgi6iT34fD/oyU2FlLJN5xYqkULM416ALMD8vjJUVyfXtRc/QpYA8xlkS8iqK5bWLZwIDAQAB"
+	' First
+	Encypton.InitRSA(privateKey, publickey)
+	
+	Log(Encypton.GetPrivateKeyBase64)
+	Log(Encypton.GetPublicKeyBase64)
+	
+	Dim entext As String = Encypton.Encrypt("Hello world")
+	Log(entext)
+	Dim detext As String = Encypton.Decrypt(entext)
+	Log(detext)
+End Sub
+
+Sub EncyptonWithOnlyPublicKey
+	Dim privateKey As String = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAPcTfAoqXadHi3FYK1vuRXaOS2f968no29VH5XNUi6Gn7qohNDY9vqpImSV/h42Mmv7qIvu8SxgXQd/TLnP9q45Fbw0emuOv505Bp3cG9t2CLqJPfh8P+jJTYWUsk3nFiqRQszjXoAswPy+MlRXJ9e1Fz9ClgDzGWRLyKorltYtnAgMBAAECgYAA9KjWqzpIgtzVt+cXCHFpV3yQLunCEq4DAa+wBgQyQGGKc+1tRkjeBMDe5cLi98fDs6kl+yD5O2HMWVdFKJaIyObg++jYqFJjniABVG6yU6b0TfONqmGuhQLJAVlnTy0Zlm4x0PUQ6e360QJPG7Danl8HKruyc99jEXDS0qQTnQJBAPolfxW5XIu7AzG685/vYgcAPzuAzZKUQyfH56WmBYEaKZIw0vLH+WdZXA1Nb4i/3tPdnbQYNwrUtXwhuX26GlsCQQD825hY1NY+4yOpzcITsF9bl3TYjRsF4j9ChMWYsTUSCbZLmuP5KP0WQnwnzNU2pVVpuBfq+sUH7HDSi9V7RWjlAkEAvZaDvmxRxxnDbwKZuUMOke3O/wM9S3YRe+oYGMU+8L1qeoGEsDt+PKVOjkp9WTDK6trRtviPZycWMfHBi5fsdwJAV9JFRYUWrFzjhBRstb3qQLuH37aSjiaYZhgLMQ9LKWqqH/Q5/c3YqSSKTqB75TDjS4ae+AQE7s2WGeprSRdAaQJAGKcYPXO4Mbj9JPCacV2NBv4DyjbzbWV3ZgclBL+wd+2MJDu2sAd0i2oqMAsIR9OZ2og7jAh/k/Qrmw3EqyoUdw=="
+	Dim publickey As String = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD3E3wKKl2nR4txWCtb7kV2jktn/evJ6NvVR+VzVIuhp+6qITQ2Pb6qSJklf4eNjJr+6iL7vEsYF0Hf0y5z/auORW8NHprjr+dOQad3Bvbdgi6iT34fD/oyU2FlLJN5xYqkULM416ALMD8vjJUVyfXtRc/QpYA8xlkS8iqK5bWLZwIDAQAB"
+	' First
+	Encypton.InitRSA(Null, publickey)
+	
+	Dim entext As String = Encypton.Encrypt("Hello world")
+	Log(entext)
+	Dim detext As String = Encypton.Decrypt(entext)
+	Log(detext)
+End Sub
+
+
+Sub Button1_Click
+	
+End Sub
